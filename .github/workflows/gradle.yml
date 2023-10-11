@@ -3,13 +3,17 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "deploy-practice-cicd" ]
+env:
+  S3_BUCKET_NAME: hyelin-ali-deploy
+  RESOURCE_PATH: ./src/main/resources/application.yaml
+  CODE_DEPLOY_APPLICATION_NAME: springboot-intro
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: bidpanda-deploy
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,14 +27,10 @@ jobs:
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    
-#    - name: Build with Gradle
-#      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-#      with:
-#        arguments: build
+      shell: bash
 
     #  gradle 빌드, 테스트 제외하고 실행
-    - name: gradle build
+    - name: Build with Gradle
       run : ./gradlew clean build -x test
         # 전송할 파일을 담을 디렉토리 생성
         
@@ -50,7 +50,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-intro-build.zip s3://hyelin-ali-deploy/
+      run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-intro-build.zip s3://$S3_BUCKET_NAME/
 
       # Deploy
     - name: Deploy
@@ -59,8 +59,8 @@ jobs:
        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
        aws deploy create-deployment \
-       --application-name springboot-intro \
-       --deployment-group-name bidpanda-deploy \
+       --application-name ${{env.CODE_DEPLOY_APPLICATION_NAME}} \
+       --deployment-group-name ${{env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME}} \
        --file-exists-behavior OVERWRITE \
-       --s3-location bucket=hyelin-ali-deploy,bundleType=zip,key=springboot-intro-build.zip \
+       --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=springboot-intro-build.zip \
        --region ap-northeast-2
