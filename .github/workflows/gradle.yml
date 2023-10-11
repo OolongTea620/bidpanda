@@ -20,6 +20,7 @@ jobs:
       - name: deploy-practice-4로 이동
       - usse: git checkout deploy-practice-4
 
+      - name: need comment
       - uses: actions/checkout@v3
 
       - name: Set up JDK 17
