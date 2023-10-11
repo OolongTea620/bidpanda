@@ -6,8 +6,8 @@ on:
 env:
   S3_BUCKET_NAME: hyelin-ali-deploy
   RESOURCE_PATH: ./src/main/resources/application.yaml
-  CODE_DEPLOY_APPLICATION_NAME: springboot-intro
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: bidpanda-deploy
+  CODE_DEPLOY_APPLICATION_NAME: bidpanda-deploy
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: bidpanda-deploy-cicd
 
 permissions:
   contents: read
