@@ -5,9 +5,9 @@ on:
     branches: [ "deploy-practice-4" ]
 env:
   S3_BUCKET_NAME: hyelin-ali-deploy
-  RESOURCE_PATH: ./src/main/resources/application.yaml
   CODE_DEPLOY_APPLICATION_NAME: bidpanda-deploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: bidpanda-deploy-cicd
+  RESOURCE_PATH: ./src/main/resources/application.yaml
 
 permissions:
   contents: read
@@ -26,7 +26,25 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      
+
+      # (2.5) environment 세팅
+      - name: Set yml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.s3.bucket: ${{secrets.AWS_S3_BUCKET}}
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+          spring.mail.username: ${{ secrets.MAIL_USERNAME }}
+          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
+
       # gradlew 실행 권한 변경
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
