@@ -37,6 +37,7 @@ jobs:
         run : ./gradlew clean build -x test
 #        run: ./gradlew build
 #        shell: bash
+
       # 전송할 파일을 담을 디렉토리 생성
       - name: Make Directory for deliver
         run: mkdir deploy
@@ -44,11 +45,15 @@ jobs:
       # Jar 파일 Copy
       - name: Copy Jar
         run: cp ./build/libs/*.jar ./deploy/
+        
+      # jar file 권한 755 부여
+      - name: Copy script
+        run: sudo chmod 755 ./deploy/*.jar
 
       #appspec 파일 copy
       - name : Copy appspec.yml
         run: cp ./appspec.yml ./deploy/
-
+        
       # script files 복사
       - name: Copy script
         run: cp ./scripts/*.sh ./deploy
