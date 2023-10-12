@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PROJECT_ROOT="/home/ubuntu/app"
 JAR_FILE="$PROJECT_ROOT/bidpanda.jar"
 
@@ -6,8 +8,6 @@ ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
 TIME_NOW=$(date +%c)
-## .jar 권한 부여
-sudo chmod 755 $PROJECT_ROOT/build/libs/*.jar
 
 # build 파일 복사
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
@@ -16,11 +16,11 @@ cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
 
+echo "JAR_FILE $JAR_FILE 경로" >> $DEPLOY_LOG
 # jar파일 실행 권한 수정
-echo "JAR_FILE $JAR_FILE"
 sudo chmod 755 $JAR_FILE
 # jar 파일 실행
-nohup java -jar /home/ubuntu/app/bidpanda*.jar > $APP_LOG 2> $ERROR_LOG &
+nohup java -jar $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
 CURRENT_PID=$(pgrep -f $JAR_FILE)
 echo "$TIME_NOW > 실행된 프로세스 아이디 $CURRENT_PID 입니다." >> $DEPLOY_LOG
