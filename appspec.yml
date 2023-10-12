@@ -14,8 +14,6 @@ permissions:
 
 hooks:
   hooks:
-    BeforeInstall:
-      - location: scripts/beforeInstall.bash
     AfterInstall:
       - location: scripts/stop.sh
         timeout: 60
