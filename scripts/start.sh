@@ -7,17 +7,18 @@ DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
 TIME_NOW=$(date +%c)
 ## .jar 권한 부여
-chmod 755 $PROJECT_ROOT/build/libs/*.jar
+sudo chmod 755 $PROJECT_ROOT/build/libs/*.jar
 
 # build 파일 복사
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
 cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
-## jar파일 실행 권한 수정
-chmod 755 $JAR_FILE
-
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
+
+# jar파일 실행 권한 수정
+sudo chmod 755 $JAR_FILE
+# jar 파일 실행
 nohup java -jar $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
 CURRENT_PID=$(pgrep -f $JAR_FILE)
