@@ -13,10 +13,12 @@ TIME_NOW=$(date +%c)
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
 cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
+## jar 명 변경
+echo "bidpanda.jar로 변경" >> $DEPLOY_LOG
+mv $PROJECT_ROOT/*.jar $JAR_FILE
+
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
-
-echo "JAR_FILE $JAR_FILE 경로" >> $DEPLOY_LOG
 # jar파일 실행 권한 수정
 sudo chmod 755 $JAR_FILE
 # jar 파일 실행
