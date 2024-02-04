@@ -10,7 +10,6 @@ import com.panda.back.domain.member.dto.ProfileResponseDto;
 import com.panda.back.domain.member.dto.SignupRequestDto;
 import com.panda.back.domain.member.entity.Member;
 import com.panda.back.domain.member.repository.MemberRepository;
-import com.panda.back.global.S3.S3Uploader;
 import com.panda.back.global.dto.BaseResponse;
 import com.panda.back.global.exception.CustomException;
 import com.panda.back.global.exception.ErrorCode;
@@ -35,7 +34,6 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final S3Uploader s3Uploader;
     private final ItemRepository itemRepository;
     private final BidRepository bidRepository;
 
@@ -141,7 +139,6 @@ public class MemberService {
 
         if (!Objects.equals(member.getProfileImageUrl(), "https://bidpanda-bucket.s3.ap-northeast-2.amazonaws.com/defualt-image/IMG_0191.png")) {
             String fileName = member.getProfileImageUrl().substring(member.getProfileImageUrl().lastIndexOf("com") + 4);
-            s3Uploader.deleteFile(fileName);
         }
 
         for (Item item : myItems) {
@@ -159,10 +156,9 @@ public class MemberService {
 
     @Transactional
     public BaseResponse updateProfileImage(MultipartFile file, Member member) throws IOException {
-        String url = s3Uploader.upload(file, "profile");
+        String url = "test";
         if (!Objects.equals(member.getProfileImageUrl(), "https://bidpanda-bucket.s3.ap-northeast-2.amazonaws.com/defualt-image/IMG_0191.png")) {
             String fileName = member.getProfileImageUrl().substring(member.getProfileImageUrl().lastIndexOf("com") + 4);
-            s3Uploader.deleteFile(fileName);
         }
         member.profileImageUrlUpdate(url);
         memberRepository.save(member);

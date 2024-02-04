@@ -26,11 +26,11 @@ public class CronJobService {
     private final WebClient webClient;
     private final CronJobRepository cronJobRepository;
 
-    @Value("${api.key.cron-job}")
-    public String CRONJOB_API_KEY;
+//    @Value("${api.key.cron-job}")
+    public String CRONJOB_API_KEY = "here cron-job api key";
 
-    @Value("${bidpanda.domain}")
-    public String DOMAIN_URL;
+//    @Value("${bidpanda.domain}")
+    public String DOMAIN_URL = "this is bidpanda domain";
     private static final String HOOK_RECEIVE_URI = "/api/items/%s/close-alarm";
     private static final String HOOK_REMIND_URI="/api/items/%s/remind-alarm";
 

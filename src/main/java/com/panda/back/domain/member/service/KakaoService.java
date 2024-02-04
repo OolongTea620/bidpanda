@@ -38,8 +38,8 @@ public class KakaoService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Value("${kakao.api.key}")
-    private String kakaoApiKey;
+//    @Value("${kakao.api.key}")
+    private String kakaoApiKey = "this is kakao api key";
 
     public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청

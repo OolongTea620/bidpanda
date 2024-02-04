@@ -12,7 +12,6 @@ import com.panda.back.domain.member.entity.Member;
 import com.panda.back.domain.member.repository.MemberRepository;
 import com.panda.back.domain.notification.entity.NotificationType;
 import com.panda.back.domain.notification.service.NotifyService;
-import com.panda.back.global.S3.S3Uploader;
 import com.panda.back.global.dto.BaseResponse;
 import com.panda.back.global.exception.CustomException;
 import com.panda.back.global.exception.ErrorCode;
@@ -39,7 +38,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemService {
     private final ApplicationEventPublisher publisher;
-    private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final NotifyService notifyService;
@@ -54,7 +52,7 @@ public class ItemService {
 
         List<String> imageUrls = new ArrayList<>();
         for (MultipartFile image : images) {
-            String imageUrl = s3Uploader.upload(image, "image");
+            String imageUrl = "test";
             imageUrls.add(imageUrl);
         }
         item.addImages(imageUrls);
@@ -81,41 +79,6 @@ public class ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_ITEM)
         );
-
-        // 이 상품이 본인이 등록한 상품인지 체크
-        if (!item.getMember().getId().equals(member.getId())) {
-            throw new CustomException(ErrorCode.NOT_FOUND_MY_ITEM);
-        }
-
-        // item의 auctionEndTime이 현재 시간보다 이전인 경우 수정 불가능하도록 체크
-        if (item.getAuctionEndTime().isAfter(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.NOT_MODIFIED_BIDDING_ITEM);
-        }
-
-        // bidCount가 0이 아닌 경우 수정 불가
-        if (item.getBidCount() > 0) {
-            throw new CustomException(ErrorCode.NOT_MODIFIED_BIDDED_ITEM);
-        }
-
-        if (images != null && !images.isEmpty()) {
-            // 기존 이미지 파일 S3에서 삭제
-            List<String> oldImageUrls = item.getImages();
-            for (String oldImageUrl : oldImageUrls) {
-                String fileName = oldImageUrl.substring(oldImageUrl.lastIndexOf("com") + 4);
-                s3Uploader.deleteFile(fileName);
-            }
-
-            // 새로운 이미지 업로드
-            List<String> newImageUrls = new ArrayList<>();
-            for (MultipartFile image : images) {
-                String newImageUrl = s3Uploader.upload(image, "image");
-                newImageUrls.add(newImageUrl);
-            }
-
-            item.clearImages();
-            item.addImages(newImageUrls);
-        }
-
         item.update(itemRequestDto);
         itemRepository.save(item);
         publisher.publishEvent(new ItemCUDEvent(item, JobEventType.update));
@@ -124,33 +87,6 @@ public class ItemService {
 
     @Transactional
     public BaseResponse deleteItemById(Long itemId, Member member) throws IOException {
-        Item item = itemRepository.findById(itemId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_ITEM)
-        );
-
-        // item의 auctionEndTime이 현재 시간보다 이전인 경우 수정 불가능하도록 체크
-        if (item.getAuctionEndTime().isAfter(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.NOT_DELETED_BIDDING_ITEM);
-        }
-
-        // bidCount가 0이 아닌 경우 삭제 불가
-        if (item.getBidCount() > 0) {
-            throw new CustomException(ErrorCode.NOT_MODIFIED_BIDDED_ITEM);
-        }
-
-        // 멤버 아이디로 해당 item 등록글 찾기
-        if (!item.getMember().getId().equals(member.getId())) {
-            throw new CustomException(ErrorCode.NOT_FOUND_MY_ITEM);
-        }
-
-        // 기존 이미지 파일 S3에서 삭제
-        List<String> imageUrls = item.getImages();
-        for (String imageUrl : imageUrls) {
-            String fileName = imageUrl.substring(imageUrl.lastIndexOf("com") + 4);
-            s3Uploader.deleteFile(fileName);
-        }
-
-        itemRepository.delete(item);
 
         return BaseResponse.successMessage("삭제 성공");
     }
