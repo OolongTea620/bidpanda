@@ -8,7 +8,7 @@
 #### 2.변경 구조
 
     - [Domain 명]
-        - action : 
+        - apdaptor : 
             - api :
         - application :
             - port :
@@ -53,7 +53,7 @@
 https://tech.osci.kr/hexagonal-architecture/
 
 [프로젝트에-새로운-아키텍처-적용하기](https://medium.com/naverfinancial/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%97%90-%EC%83%88%EB%A1%9C%EC%9A%B4-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0-99d70df6122b)
-
+[Understanding Clean architecture with Example in Java](https://shivagoy.medium.com/overview-on-clean-architecture-a2715d982fdd)
 ## 참고 서적
 
 [만들면서 배우는 클린 아키텍처 구입](https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000005295801)
