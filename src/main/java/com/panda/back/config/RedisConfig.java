@@ -30,7 +30,7 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
 
-        // Repository에서 저장시 HashType으로 저장되므로, 아래 설정 적용
+        // Repository에서 저장 시 HashType으로 저장되므로, 아래 설정 적용
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 

@@ -5,30 +5,63 @@
     1. Service layter에서 DIP를 적용하여 controller-service-dao-dto사이의 코드 의존성 줄이기
     2. 변경된 리펙토링에 따라서 기능 모듈 테스트 추가하기
 
-#### 2.변경 구조
+#### 2.패키지 구조
+파일 구조 변경이 당연할가 고민을 하다가 블로그 글을 보면서 레퍼런스 체크를 했다.
+그 중에서 다음과 같은 패키지 구조를 채택하게 되었다.
 
-    - [Domain 명]
-        - apdaptor : 
-            - api :
-        - application :
-            - port :
-                - in :
-                - out :
-            - service :
-        - domain : 
-        - infrastructure :
-            - persistence : domain에서
-
-규칙
-
-    1. layer마다 dto로 통신을 하도록 했다.
-    2. layer마다 역할을 독립 시키려 했다.
+```text
+user/
+    entity/
+        model/
+            User.java
+        exception/
+            UserNotFoundException.java
+            ...
+        gateway/
+            UserGateWay.java
+    usecase/
+        impl/
+            createUserUseCaseImpl.java
+            ...
+        dto/
+            IUserInfoPublicData.java
+            ...
+        createUserUseCase.java
+        ...
+    infrastructure/
+        api/
+            web/
+                UserApiController.java
+                ...
+        dto/
+            UserCreateSuccessPublicData.java
+            UserInfoPublicData.java
+            ...
+        gateway/
+            AdminDatabaseGateway.java
+        db/
+            repository/
+                AdminRepository.java
+            jpa/
+               UserJpaEntity.java 
+```
 
 ### 리펙토링 기록
 
+#### 2024.02.11
+* 패키지 구조 확정
+* 엔티티 -> User 도메인 작성 시작
+
+---
+#### 2024.02.10
+* User 엔티티 작성
+* 패키지 구조 계획 세우기
+---
 #### 2024.02.09
 * 생각보다 user 도메인 분리가 어려운 것 같다. 이유 : spring security, 다른 도메인으로 관여가 많은 도메인이라서
-* 
+* User 와 UserCreate, UserUpdate 엔티티 독립 고민 -> 클린 아키텍처 용어 정의를 생각해 볼 때, 분리하는게 맞다고 판단
+* 좀 더 서치한 결과로, 헥사고날 -> 클린 아키텍처로 이론이 발전되었음을 발견 
+* 유스케이스 명세 작성
 ---
 #### 2024.02.08
 
@@ -36,11 +69,11 @@
 ---
 #### 2024.02.06
 * User 도메인 부분 재작성
-* SW architech부분 재작성 
+* 헥사고날 방식과 클린 아키텍처 학습 시작, 패키지 구조 검색 시작
 ---
 #### 2024.02.05
-* 내가 만든 STOMP 적용 채팅의 문제 인식 -> 코드 수정이 어렵다
-* TDD -> 헥사고날 아키텍처 도입 고민
+* 내가 만든 STOMP 적용 채팅의 문제 인식 -> 코드 수정이 어렵다, 일부 코드에서 강한 결합성을 보였다.
+* TDD -> 클린 아키텍처 도입 고민
 * [만들면서 배우는 클린 아키텍처 구입](https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000005295801)
 ---
 #### 2024.02.04
@@ -49,6 +82,9 @@
 * User명 과정 추가
 
 ## 참고 레퍼런스 URL 
+클린 아키텍처(패키지는 어떻게 하면 좋을까에 대한 참고)  
+[Clean Architecture with Spring Boot: A good idea?](https://medium.com/@viniciusromualdobusiness/clean-architecture-with-spring-boot-a-good-idea-d6f97e450130)
+
 헥사고날 아키텍처(Hexagonal Architecture) : 유연하고 확장 가능한 소프트웨어 디자인:  
 https://tech.osci.kr/hexagonal-architecture/
 
