@@ -2,9 +2,9 @@ package com.panda.back.user.infrastructure.api.web;
 
 import com.panda.back.user.entity.gateway.CreateUserUseCase;
 import com.panda.back.user.entity.model.User;
-import com.panda.back.user.infrastructure.dto.UserCreateReqDto;
-import com.panda.back.user.infrastructure.dto.UserCreateResVo;
-import com.panda.back.user.infrastructure.dto.UserCreateVo;
+import com.panda.back.user.infrastructure.dto.CreateUserReqDto;
+import com.panda.back.user.infrastructure.dto.CreateUserResDto;
+import com.panda.back.user.infrastructure.dto.CreateUserUseCaseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,10 @@ public class CreateUserController {
 
 
   @PostMapping("/web")
-  public ResponseEntity<UserCreateResVo> create(@RequestBody UserCreateReqDto userCreateReqDto) {
-    User user = createUserUseCase.create(UserCreateVo.from(userCreateReqDto));
+  public ResponseEntity<CreateUserResDto> create(@RequestBody CreateUserReqDto createUserReqDto) {
+    User user = createUserUseCase.create(CreateUserUseCaseDto.from(createUserReqDto));
     return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(UserCreateResVo.from(user));
+        .body(CreateUserResDto.from(user));
   }
 }

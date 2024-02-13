@@ -1,6 +1,9 @@
 package com.panda.back.user.entity.model;
 
-import com.panda.back.user.infrastructure.dto.UserCreateVo;
+import com.panda.back.user.entity.exception.UnAuthorizedUserException;
+import com.panda.back.user.infrastructure.dto.CreateUserUseCaseDto;
+import com.panda.back.user.infrastructure.dto.DeleteUserDto;
+import com.panda.back.user.infrastructure.dto.UpdateNickReqDto;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,12 +29,41 @@ public class User {
     this.status = status;
   }
 
-  public static User from(UserCreateVo userCreateVo) {
+  public static User from(CreateUserUseCaseDto createUserUseCaseDto) {
     return User.builder()
-        .email(userCreateVo.getEmail())
-        .password(userCreateVo.getPassword())
-        .nickname(userCreateVo.getNickname())
+        .email(createUserUseCaseDto.getEmail())
+        .password(createUserUseCaseDto.getPassword())
+        .nickname(createUserUseCaseDto.getNickname())
         .status(UserStatus.ACTIVE)
         .build();
   }
+
+  public User updateNickname(UpdateNickReqDto updateNickReqDto) {
+    return User.builder()
+        .id(id)
+        .email(email)
+        .password(password)
+        .nickname(updateNickReqDto.getNickname())
+        .createdAt(createdAt)
+        .status(status)
+        .build();
+  }
+
+  public User cancel(DeleteUserDto deleteUserDto) {
+    if (!id.equals(deleteUserDto.getId())) {
+      throw new UnAuthorizedUserException();
+    }
+    if (!email.equals(deleteUserDto.getEmail())) {
+      throw new UnAuthorizedUserException();
+    }
+    return User.builder()
+        .id(id)
+        .email(email)
+        .password(password)
+        .nickname(nickname)
+        .createdAt(createdAt)
+        .status(UserStatus.INACTIVE)
+        .build();
+  }
+
 }

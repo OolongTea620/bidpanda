@@ -2,7 +2,7 @@ package com.panda.back.user.usecase;
 
 import com.panda.back.user.entity.gateway.CreateUserUseCase;
 import com.panda.back.user.entity.model.User;
-import com.panda.back.user.infrastructure.dto.UserCreateVo;
+import com.panda.back.user.infrastructure.dto.CreateUserUseCaseDto;
 import com.panda.back.user.infrastructure.gateway.UserDataBaseGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
   @Override
   @Transactional
-  public User create(UserCreateVo userCreateVo) {
-    return userDataBaseGateway.save(User.from(userCreateVo));
+  public User create(CreateUserUseCaseDto createUserUseCaseDto) {
+    return userDataBaseGateway.save(User.from(createUserUseCaseDto));
   }
 
   private boolean certifyEmail(String email) {
