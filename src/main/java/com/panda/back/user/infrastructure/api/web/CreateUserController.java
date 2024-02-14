@@ -8,6 +8,8 @@ import com.panda.back.user.infrastructure.dto.CreateUserUseCaseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,10 @@ public class CreateUserController {
 
   private final CreateUserUseCase createUserUseCase;
 
+  @GetMapping("/email/{email}/")
+  public ResponseEntity<?> emailAvailable(@PathVariable String email) {
+    return ResponseEntity.ok().body("");
+  }
 
   @PostMapping("/web")
   public ResponseEntity<CreateUserResDto> create(@RequestBody CreateUserReqDto createUserReqDto) {

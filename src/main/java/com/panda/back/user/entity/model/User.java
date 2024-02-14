@@ -39,6 +39,9 @@ public class User {
   }
 
   public User updateNickname(UpdateNickReqDto updateNickReqDto) {
+    if (status.equals(UserStatus.INACTIVE)) {
+      throw new UnAuthorizedUserException();
+    }
     return User.builder()
         .id(id)
         .email(email)
@@ -50,9 +53,6 @@ public class User {
   }
 
   public User cancel(DeleteUserDto deleteUserDto) {
-    if (!id.equals(deleteUserDto.getId())) {
-      throw new UnAuthorizedUserException();
-    }
     if (!email.equals(deleteUserDto.getEmail())) {
       throw new UnAuthorizedUserException();
     }

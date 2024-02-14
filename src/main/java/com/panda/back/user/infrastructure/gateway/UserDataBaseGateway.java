@@ -8,7 +8,13 @@ public interface UserDataBaseGateway {
 
   User save(User user);
 
-  Optional<User> findByIdAndStatus(Long id, UserStatus userStatus);
+  Optional<User> findById(Long id);
+
+  Optional<User> findByIdAndStatus(Long id, UserStatus status);
 
   Optional<User> findByEmail(String email);
+
+  Optional<User> findByEmailAndStatus(String email, UserStatus status);
+
+
 }

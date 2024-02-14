@@ -10,5 +10,7 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
 
   Optional<UserJpaEntity> findByIdAndStatus(Long id, UserStatus status);
 
+  Optional<UserJpaEntity> findByEmailAndStatus(String email, UserStatus status);
+
   Optional<UserJpaEntity> findByEmail(String email);
 }

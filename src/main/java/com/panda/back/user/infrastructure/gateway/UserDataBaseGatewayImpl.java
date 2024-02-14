@@ -14,14 +14,26 @@ public class UserDataBaseGatewayImpl implements UserDataBaseGateway {
 
   private final UserJpaRepository userJpaRepository;
 
+
   @Override
   public User save(User user) {
     return userJpaRepository.save(UserJpaEntity.fromModel(user)).toModel();
   }
 
   @Override
+  public Optional<User> findById(Long id) {
+    return userJpaRepository.findById(id).map(UserJpaEntity::toModel);
+  }
+
+  @Override
   public Optional<User> findByIdAndStatus(Long id, UserStatus userStatus) {
     return userJpaRepository.findByIdAndStatus(id, userStatus).map(UserJpaEntity::toModel);
+  }
+
+  @Override
+  public Optional<User> findByEmailAndStatus(String email, UserStatus status) {
+    return userJpaRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
+        .map(UserJpaEntity::toModel);
   }
 
   @Override

@@ -19,9 +19,4 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
   public User create(CreateUserUseCaseDto createUserUseCaseDto) {
     return userDataBaseGateway.save(User.from(createUserUseCaseDto));
   }
-
-  private boolean certifyEmail(String email) {
-    return false;
-  }
-
 }

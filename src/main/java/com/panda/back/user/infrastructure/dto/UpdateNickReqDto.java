@@ -9,11 +9,13 @@ import lombok.Setter;
 @Setter
 public class UpdateNickReqDto {
 
+  private String email;
   @JsonProperty(required = true)
   private String nickname;
 
   @Builder
-  public UpdateNickReqDto(String nickname) {
+  public UpdateNickReqDto(String email, String nickname) {
+    this.email = email;
     this.nickname = nickname;
   }
 }
