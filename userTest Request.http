@@ -1,0 +1,10 @@
+### create user - temp
+
+POST localhost:8080/api/users/web
+Content-Type: application/json
+
+{
+  "email" : "rlafls9596@gmail.com",
+  "password" : "rlsfls9596",
+  "nickname": "linlin"
+}
