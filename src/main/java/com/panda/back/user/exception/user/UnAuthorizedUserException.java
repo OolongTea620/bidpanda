@@ -1,8 +1,9 @@
-package legacy.user.entity.exception;
+package com.panda.back.user.exception.user;
 
 public class UnAuthorizedUserException extends RuntimeException {
 
   public UnAuthorizedUserException() {
-    super("유효하지 않은 유저입니다");
+    super("권한 없는 유저입니다");
   }
+
 }

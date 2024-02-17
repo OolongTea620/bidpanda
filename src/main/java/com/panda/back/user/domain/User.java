@@ -2,7 +2,7 @@ package com.panda.back.user.domain;
 
 import com.panda.back.user.application.port.in.dto.CreateUserDto;
 import com.panda.back.user.application.port.in.dto.UpdateUserDto;
-import legacy.user.entity.exception.UnAuthorizedUserException;
+import com.panda.back.user.exception.user.UnAuthorizedUserException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -54,6 +54,9 @@ public class User {
   }
 
   public User delete(String email) {
+    if (this.status.equals(UserStatus.INACTIVE)) {
+      throw new UnAuthorizedUserException();
+    }
     if (!this.email.equals(email)) {
       throw new UnAuthorizedUserException();
     }

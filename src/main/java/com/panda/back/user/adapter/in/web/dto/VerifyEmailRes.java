@@ -5,9 +5,10 @@ import lombok.Getter;
 @Getter
 public class VerifyEmailRes {
 
-  private final boolean sendEmail;
+  private final boolean isVerified;
 
-  public VerifyEmailRes(boolean sendEmail) {
-    this.sendEmail = sendEmail;
+  public VerifyEmailRes(boolean isVerified) {
+    this.isVerified = isVerified;
   }
+
 }

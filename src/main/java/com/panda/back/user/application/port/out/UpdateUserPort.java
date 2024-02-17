@@ -2,7 +2,7 @@ package com.panda.back.user.application.port.out;
 
 import com.panda.back.user.domain.User;
 
-public interface CreateUserPort {
+public interface UpdateUserPort {
 
-  User save(User user);
+  User update(User user);
 }
